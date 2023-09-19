@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Yanki's</title>
     <style>
-        #typeText:after {
+        #root:after {
             content: '|';
             animation: blink 1s infinite;
         }
@@ -17,7 +17,7 @@
 <body>
     <div id="root"></div>
     <div id="canvas_nest"></div>
-    <div id="typeText"></div> <!-- 新增的 div 用于显示打字效果 -->
+    <div id="typeText"></div>
 
     <!-- React 和 ReactDOM 库 -->
     <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
@@ -25,18 +25,18 @@
 
     <!-- React 代码 -->
     <script type="text/javascript">
-        const title = React.createElement('h1', null, "Yanki's>_<");
+        const title = React.createElement('h1', {id: 'reactTitle'}, "");
         ReactDOM.render(title, document.getElementById('root'));
     </script>
 
     <!-- 打字效果代码 -->
     <script type="text/javascript">
-        const text = 'Hello, World!';
+        const text = "Yanki's>_<";
         let index = 0;
 
         function type() {
             if (index < text.length) {
-                document.getElementById('typeText').innerHTML += text.charAt(index);
+                document.getElementById('reactTitle').innerHTML += text.charAt(index);
                 index++;
                 setTimeout(type, 200); // 每200毫秒打印一个字符
             }
