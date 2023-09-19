@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Yanki's Blog</title>
+    <title>Yanki's</title>
 </head>
 <body>
     <div id="root"></div>
+    <div id="canvas_nest"></div>
 
     <!-- React 和 ReactDOM 库 -->
     <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
@@ -16,5 +17,7 @@
         const title = React.createElement('h1', null, "Yanki's Blog");
         ReactDOM.render(title, document.getElementById('root'));
     </script>
+    <script src="js/canvas-nest.js"></script>
+
 </body>
 </html>
