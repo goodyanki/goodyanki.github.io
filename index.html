@@ -1,8 +1,57 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Simple Blog</title>
+  <style>
+    body {
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+    header {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 1em;
+    }
+    main {
+      padding: 1em;
+      z-index: 1;
+      position: relative;
+    }
+    article {
+      margin-bottom: 2em;
+    }
+    h1, h2 {
+      margin: 0;
+    }
+  </style>
+</head>
 <body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
+  <!-- Canvas for canvas-nest.js -->
+  <canvas id="canvas_nest" style="position: fixed; z-index: -1;"></canvas>
+
+  <header>
+    <h1>My Simple Blog</h1>
+  </header>
+
+  <main>
+    <article>
+      <h2>Article 1</h2>
+      <p>This is the summary of my first article.</p>
+    </article>
+
+    <article>
+      <h2>Article 2</h2>
+      <p>This is the summary of my second article.</p>
+    </article>
+  </main>
+
+  <!-- Include canvas-nest.js -->
+  <script src="js/canvas-nest.js"></script>
+  <script>
+    // Initialize canvas-nest.js
+    // Your initialization code here
+  </script>
 </body>
 </html>
