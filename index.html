@@ -3,10 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>Yanki's</title>
+    <style>
+        #typeText:after {
+            content: '|';
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+    </style>
 </head>
 <body>
     <div id="root"></div>
     <div id="canvas_nest"></div>
+    <div id="typeText"></div> <!-- 新增的 div 用于显示打字效果 -->
 
     <!-- React 和 ReactDOM 库 -->
     <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
@@ -17,7 +28,24 @@
         const title = React.createElement('h1', null, "Yanki's Blog");
         ReactDOM.render(title, document.getElementById('root'));
     </script>
-    <script src="js/canvas-nest.js"></script>
 
+    <!-- 打字效果代码 -->
+    <script type="text/javascript">
+        const text = 'Hello, World!';
+        let index = 0;
+
+        function type() {
+            if (index < text.length) {
+                document.getElementById('typeText').innerHTML += text.charAt(index);
+                index++;
+                setTimeout(type, 200); // 每200毫秒打印一个字符
+            }
+        }
+
+        type();
+    </script>
+
+    <!-- canvas-nest.js 代码 -->
+    <script src="js/canvas-nest.js"></script>
 </body>
 </html>
