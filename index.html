@@ -1,51 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Yanki's</title>
-    <style>
-        #root:after {
-            content: '|';
-            animation: blink 1s infinite;
-        }
+  <meta charset="UTF-8">
+  <title>Yanqi Terminal Homepage</title>
+  <style>
+    body {
+      background-color: black;
+      color: #00FF00;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 16px;
+      margin: 0;
+      padding: 20px;
+    }
 
-        @keyframes blink {
-            50% { opacity: 0; }
-        }
-    </style>
+    .cursor {
+      display: inline-block;
+      width: 10px;
+      background-color: #00FF00;
+      animation: blink 1s step-start infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    #bootText, #terminalOutput {
+      white-space: pre-line;
+    }
+
+    .ascii-art {
+      white-space: pre;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 12px;
+      line-height: 1.1;
+      color: #00FF00;
+      margin-bottom: 20px;
+    }
+
+    #inputArea {
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+    }
+
+    #commandInput {
+      background: none;
+      border: none;
+      color: #00FF00;
+      font-family: inherit;
+      font-size: inherit;
+      outline: none;
+      flex: 1;
+      white-space: nowrap;
+      min-width: 10px;
+    }
+  </style>
 </head>
 <body>
-    <div id="root"></div>
-    <div id="canvas_nest"></div>
-    <div id="typeText"></div>
 
-    <!-- React 和 ReactDOM 库 -->
-    <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+<!-- BIOS output -->
+<div id="bootText"></div>
 
-    <!-- React 代码 -->
-    <script type="text/javascript">
-        const title = React.createElement('h1', {id: 'reactTitle'}, "");
-        ReactDOM.render(title, document.getElementById('root'));
-    </script>
+<!-- ASCII Art -->
+<pre class="ascii-art" id="asciiArt" style="display:none;">
+    █████ █████                                 ███     █████ █████                              
+    ░░███ ░░███                                 ░░░     ░░███ ░░███                               
+     ░░███ ███    ██████   ████████    ████████ ████     ░░███ ███    ██████   ████████    ███████
+      ░░█████    ░░░░░███ ░░███░░███  ███░░███ ░░███      ░░█████    ░░░░░███ ░░███░░███  ███░░███
+       ░░███      ███████  ░███ ░███ ░███ ░███  ░███       ░░███      ███████  ░███ ░███ ░███ ░███
+        ░███     ███░░███  ░███ ░███ ░███ ░███  ░███        ░███     ███░░███  ░███ ░███ ░███ ░███
+        █████   ░░████████ ████ █████░░███████  █████       █████   ░░████████ ████ █████░░███████
+       ░░░░░     ░░░░░░░░ ░░░░ ░░░░░  ░░░░░███ ░░░░░       ░░░░░     ░░░░░░░░ ░░░░ ░░░░░  ░░░░░███
+                                          ░███                                            ███ ░███
+                                          █████                                          ░░██████ 
+                                         ░░░░░                                            ░░░░░░  
+</pre>
 
-    <!-- 打字效果代码 -->
-    <script type="text/javascript">
-        const text = "Yanki's>_<";
-        let index = 0;
+<!-- Terminal output -->
+<div class="terminal" id="terminalOutput"></div>
 
-        function type() {
-            if (index < text.length) {
-                document.getElementById('reactTitle').innerHTML += text.charAt(index);
-                index++;
-                setTimeout(type, 200); // 每200毫秒打印一个字符
-            }
-        }
+<!-- Input line -->
+<div class="terminal" id="inputArea" style="display:none;">
+  <span>yanqi@terminal:~$ </span>
+  <input type="text" id="commandInput" autofocus />
+</div>
 
-        type();
-    </script>
+<script>
+  const bootLines = [
+    "Booting YanqiOS...",
+    "Copyright (C) 2001-2025, Yanqi Yang",
+    "",
+    "CPU: My brain @ 10GHz",
+    "Memory Testing: Hope it works...",
+    "Detecting IDE Drives ...",
+    "Primary Master: YanqiOS SSD 1TB",
+    "",
+    "Boot from CD: ",
+    "Booting...",
+    "",
+    "Loading YanqiOS v1.0...",
+    "Initializing Kernel Modules...",
+    "Mounting File System...",
+    "Starting Web Services...",
+    "",
+    "Welcome to Yanqi's Terminal."
+  ];
 
-    <!-- canvas-nest.js 代码 -->
-    <script src="js/canvas-nest.js"></script>
+  const commands = {
+    "whoami": "Yanqi Yang\nEconomics Major & Computer Science Minor\nCybersecurity & FinTech Explorer.",
+    "projects": "1. Stock Trading Simulator\n2. FDI Analysis Reasearch",
+    "contact": "Email: yanqiy4ng@gmail.com\nGitHub: github.com/goodyanqi\nLinkedIn: Not prepared yet.",
+    "help": "Available commands:\nwhoami\nprojects\ncontact\nhelp\nclear"
+  };
+
+  const bootTextDiv = document.getElementById('bootText');
+  const asciiArtDiv = document.getElementById('asciiArt');
+  const terminalOutput = document.getElementById('terminalOutput');
+  const commandInput = document.getElementById('commandInput');
+  const inputArea = document.getElementById('inputArea');
+
+  let lineIndex = 0;
+
+  function typeLine() {
+    if (lineIndex < bootLines.length) {
+      bootTextDiv.innerHTML += bootLines[lineIndex] + '\n';
+      lineIndex++;
+      setTimeout(typeLine, 500);
+    } else {
+      setTimeout(() => {
+        asciiArtDiv.style.display = 'block';
+        inputArea.style.display = 'flex';
+        commandInput.focus();
+      }, 1000);
+    }
+  }
+
+  commandInput.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+      const input = commandInput.value.trim();
+      terminalOutput.innerHTML += `yanqi@terminal:~$ ${input}\n`;
+
+      if (input === "clear") {
+        terminalOutput.innerHTML = "";
+      } else if (commands[input]) {
+        terminalOutput.innerHTML += commands[input] + '\n';
+      } else {
+        terminalOutput.innerHTML += `Command not found: ${input}\nType 'help' to see available commands.\n`;
+      }
+
+      commandInput.value = "";
+      window.scrollTo(0, document.body.scrollHeight);
+    }
+  });
+
+  // Start BIOS boot sequence
+  typeLine();
+</script>
+
 </body>
 </html>
